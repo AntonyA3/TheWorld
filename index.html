@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="description" content="Orbikun">
+        <meta name="author" content="AntonyA3">
+        <meta name="author-email" content="antonya3@protonmail.com">
+        <link rel="stylesheet" type="text/css" href="world_page.css"/>
+    </head>
+    <body>
+        <div class="center-frame">
+            <div class="canvasFrame" style="display: grid;">
+                <canvas id="canvas" width="640" height="480" ></canvas>
+                <canvas id="canvas2d" width="640" height="480"></canvas>
+            </div>
+            
+            <div style="background-color: orchid; border: solid 1px green;">
+     
+                <input id="x-label" type="number" size="3"/> 
+                <input id="y-label" type="number" size="3"/>
+                <input id="z-label" type="number" size="3"/><br/>  
+                <button value="rand" id="catagory">Topic</button> <span id="selected-catagory-name">rand</span><br/>
+            <div id="catagoryList" style="position: absolute; background-color: aqua;">
+               
+            </div>
+                <textarea id="title-field" style="width: 90%; resize: none;" placeholder="Title" rows="1"></textarea>
+                <textarea id="signature-field" style="width: 90%; resize: none;" rows="1" placeholder="Name (add #password for tripcode)"></textarea>
+                <textarea id="content-field" style="width: 90%; resize: none;" placeholder="Converse with the world"></textarea>
+                <button id="send-to-world-button">Send To World</button>
+            </div>
+       
+            <div style="margin-left: 5px;"> 
+                Threads
+                <input id="post-checkbox" type="checkbox">
+            </div>
+            <div id="threadList" style=" border: solid 1px green;">
+                <div style="margin-top: 0px; padding-bottom: 20px; padding-top: 20px; width: 100%; border: solid 1px palegreen;">HAGGSSX</div>
+                <div style="margin-top: 0px; padding-bottom: 20px; padding-top: 20px; width: 100%; border: solid 1px palegreen;">HAGGSSX</div>
+                <div style="margin-top: 0px; padding-bottom: 20px; padding-top: 20px; width: 100%; border: solid 1px palegreen;">HAGGSSX</div>
+    
+            </div>
+
+        </div>
+        
+        
+        
+        <script id="phong-vertex-shader" type="not-javascript">
+            attribute vec3 vertex;            
+            attribute vec3 vertexNormal;            
+            attribute vec2 uv;
+            uniform mat4 modelMatrix;
+            uniform mat4 projectionMatrix;
+            uniform mat4 viewMatrix;
+            varying vec3 normal;
+            varying vec2 fragmentUV;
+            void main() {
+              fragmentUV = uv;
+              mat4 normalMatrix = modelMatrix;
+              normalMatrix[0][3] = 0.0;
+              normalMatrix[1][3] = 0.0;
+              normalMatrix[2][3] = 0.0;
+              normal = normalize((normalMatrix * vec4(vertexNormal,1.0)).xyz);
+
+              
+              gl_Position = projectionMatrix * viewMatrix * modelMatrix * vec4(vertex,1.0);
+            }
+
+        </script>
+        <script id="phong-fragment-shader" type="not-javascript">
+            precision mediump float;
+            varying vec2 fragmentUV;
+            varying vec3 normal;
+            uniform sampler2D texture0;
+            void main() {
+                vec3 lightDirection =  vec3(-1.0,0.0,1.0);
+                float intensity = max(0.7 *dot(lightDirection,normal),0.1) * 2.0;
+                vec4 color = vec4(texture2D(texture0, fragmentUV).xyz * intensity,1.0);  
+                gl_FragColor = color;
+            }
+        </script>
+        <script id="baseShader-vertex-shader" type="not-javascript">
+            attribute vec3 vertex;            
+            attribute vec3 vertexNormal;            
+            uniform mat4 modelMatrix;
+            uniform mat4 projectionMatrix;
+            uniform mat4 viewMatrix;
+            varying vec3 normal;
+            void main() {
+              mat4 normalMatrix = modelMatrix;
+              normalMatrix[0][3] = 0.0;
+              normalMatrix[1][3] = 0.0;
+              normalMatrix[2][3] = 0.0;
+              normal = normalize((normalMatrix * vec4(vertexNormal,1.0)).xyz);              
+              gl_Position = projectionMatrix * viewMatrix * modelMatrix * vec4(vertex,1.0);
+            }
+
+        </script>
+        <script id="baseShader-fragment-shader" type="not-javascript">
+            precision mediump float;
+            varying vec3 normal;
+            void main() {
+                vec3 lightDirection =  vec3(-1.0,0.0,1.0);
+                float intensity = max(0.7 *dot(lightDirection,normal),0.1) * 2.0;
+                gl_FragColor = vec4(1.0,0.0,0.0,1.0) * max(intensity,1.0); 
+            }
+        </script>
+
+       
+       
+        <script src="linearAlgebra.js"></script>
+        <script src="world.js"></script>
+
+    </body>
+</html>
