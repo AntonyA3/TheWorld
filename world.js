@@ -165,6 +165,7 @@ function createSphere(vertexArray,indexArray, longSegments, latSegments){
 }
 
 function initializeCatagoryList(world){
+    /*
     let request = new XMLHttpRequest();
     request.open("GET", "get_topics.php")
     request.onreadystatechange = function(){
@@ -197,77 +198,12 @@ function initializeCatagoryList(world){
         }
         
     }
+    
     request.send();
-  
+    */
 
 }
-/*
-function initializePinModel(world){
-    let request = new XMLHttpRequest();
-    request.open("GET", "pin.obj")
-    request.onreadystatechange = function(){
-        if(this.readyState === XMLHttpRequest.DONE){
-            if(this.status === 200){
-                let verticies = [];
-                let normals = [];
-                let indicies = [];
-                let objData = request.response.split('\n');
-                objData.forEach(row =>{
-                   let columns = row.split(' ');
-                   if(columns[0] == "v"){
-                       verticies.push(
-                        parseFloat(columns[1]),parseFloat(columns[2]),parseFloat(columns[3]),0,0,0
-                       );
-                   }
-                   
-                   if(columns[0] == "vn"){
-                       normals.push(
-                        [parseFloat(columns[1]),parseFloat(columns[2]),parseFloat(columns[3])]
-                       );
-                    }
-                    if(columns[0] == "f"){
-                        let cells = columns.slice(1);
-                        if(columns.length == 4){
-                            cells.forEach(cell =>{
-                                cell = cell.split("//");
-                                let vertexIndex  = cell[0] - 1;
-                                indicies.push(vertexIndex);
-                                let normalIndex = cell[1]-1;
-                                let normal = normals[normalIndex];
-                                verticies[3 * vertexIndex] = normal[0];
-                                verticies[3 * vertexIndex + 1] = normal[1];
-                                verticies[3 * vertexIndex + 2] = normal[2];
-                            })
-                        }
-                    }
 
-                });
-
-                world.pinModel.verticies = verticies;
-                world.pinModel.indicies = indicies;
-
-                world.pinModel.vbo = gl.createBuffer();
-                gl.bindBuffer(gl.ARRAY_BUFFER, world.pinModel.vbo);
-                gl.bufferData(gl.ARRAY_BUFFER,
-                    new Float32Array(world.pinModel.verticies),
-                    gl.STATIC_DRAW);
-            
-                world.pinModel.ebo = gl.createBuffer();
-                gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, world.planet.model.ebo);
-                gl.bufferData(gl.ELEMENT_ARRAY_BUFFER,
-                    new Uint16Array(world.pinModel.indicies),
-                    gl.STATIC_DRAW);
-                
-            }else{
-                console.log("request failed")
-            }
-        }   
-    }
-    request.send();
-  
-
-
-}*/
 function initializeWorldEvents(world){
     document.onmousedown = e =>{
         let mouseInput = world.mouseInput;
@@ -338,7 +274,8 @@ function initializeWorldEvents(world){
     });
 
     world.domElements.sendToWorldButton.onclick = e =>{
-        createThread(world);
+        console.log("cannot create thread yet");
+        //createThread(world);
     }
 
     world.canvas.onmouseover = e =>{
